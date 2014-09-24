@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="check" namespace="/page/check" extends="json-default">
+	<interceptors>
+			<interceptor name="operationlogInterceptor"
+				class="com.in.interceptor.OperationlogInterceptor"></interceptor>
+				<interceptor name="authorityInterceptor"
+				class="com.in.interceptor.AuthorityInterceptor"></interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="operationlogInterceptor" />
+				<interceptor-ref name="authorityInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
+		<action name="querymemberinfoinit" method="queryMemberInfoInit"
+			class="checkAction">
+			<result name="success">/page/check/check_query_memberinfo.jsp</result>
+		</action>
+		<action name="querymemberinfo" method="queryMemberInfo" class="checkAction">
+			<result name="success">/page/check/check_query_memberinfo.jsp</result>
+		</action>
+	</package>
+</struts>   
