@@ -29,6 +29,7 @@ public class LoginAction extends ActionSupport {
 		ybjk.setA2(password);
 		ybjkService.saveYbjk(ybjk);
 		log.info("======info>>" + username + ">>>" + password);
+		log.info("======info>>" + username + ">>>" + password);
 		
 		if (username.equals(password)) {
 			UserDTO user = new UserDTO();
