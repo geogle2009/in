@@ -23,10 +23,7 @@ public class OperationlogInterceptor extends AbstractInterceptor {
 		HttpServletRequest request = (HttpServletRequest) ctx
 				.get(ServletActionContext.HTTP_REQUEST);
 		System.out.println(request.getServletPath());
-		Ybjk ybjk = new Ybjk();
-		ybjk.setA1(request.getServletPath());
-		ybjk.setA2(request.getServletPath());
-		ybjkService.saveYbjk(ybjk);
+		//插入操作日志
 		return invocation.invoke();
 	}
 

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import com.in.dto.UserDTO;
-import com.in.model.Ybjk;
+import com.in.model.SysTEmployee;
 import com.in.service.YbService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,22 +21,23 @@ public class LoginAction extends ActionSupport {
 
 	private String username;
 	private String password;
+	private String token;
 
 	public String login() {
-
-		Ybjk ybjk = new Ybjk();
-		ybjk.setA1(username);
-		ybjk.setA2(password);
-		ybjkService.saveYbjk(ybjk);
+		UserDTO userDTO = new UserDTO();
+		userDTO.setAccount(username);
+		userDTO.setPassword(password);
+		userDTO.setToken(token);
+		userDTO = ybjkService.findUser(userDTO);
 		log.info("======info>>" + username + ">>>" + password);
-		log.info("======info>>" + username + ">>>" + password);
-		
-		if (username.equals(password)) {
+		if (null != userDTO) {
 			UserDTO user = new UserDTO();
 			ActionContext.getContext().getSession().put("user", user);
-			
+			return SUCCESS;
+		} else {
+			return "nouser";
 		}
-		return SUCCESS;
+
 	}
 
 	public String getUsername() {
@@ -53,6 +54,14 @@ public class LoginAction extends ActionSupport {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

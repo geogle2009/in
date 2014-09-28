@@ -1,7 +1,7 @@
 package com.in.service;
 
-import com.in.model.Ybjk;
+import com.in.dto.UserDTO;
 
 public interface YbService {
-	public void saveYbjk(Ybjk ybjk);
+	public UserDTO findUser(UserDTO userDTO);
 }

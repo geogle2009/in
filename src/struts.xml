@@ -20,6 +20,9 @@
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="mydefault"></default-interceptor-ref>
+		<global-results>
+			<result name="nouser" type="redirect">/login.jsp</result>
+		</global-results>
 		<action name="login" method="login" class="loginAction">
 			<result name="success">/main.jsp</result>
 			<result name="error">/login.jsp</result>
