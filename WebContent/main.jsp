@@ -29,11 +29,16 @@
 	var index = 0;
 	function addPanel(ctitle) {
 		index++;
-		$('#tt').tabs('add', {
-			title : ctitle,
-			href:'page/check/querymemberinfoinit.action',
-			closable : true
-		});
+		var flag = $('#tt').tabs('exists',ctitle);
+		if(flag){
+			$('#tt').tabs('select',ctitle);
+		}else{
+			$('#tt').tabs('add', {
+				title : ctitle,
+				href:'page/check/querymemberinfoinit.action',
+				closable : true
+			});
+		}
 	}
 	function removePanel() {
 		var tab = $('#tt').tabs('getSelected');
