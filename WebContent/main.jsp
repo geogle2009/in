@@ -27,13 +27,18 @@
 	src="<%=basePath%>jquery/jquery.easyui.min.js"></script>
 <script type="text/javascript">
 	var index = 0;
-	function addPanel(ctitle) {
+	function addPanel(ctitle,chref) {
 		index++;
-		$('#tt').tabs('add', {
-			title : ctitle,
-			href:'page/check/querymemberinfoinit.action',
-			closable : true
-		});
+		var flag = $('#tt').tabs('exists',ctitle);
+		if(flag){
+			$('#tt').tabs('select',ctitle);
+		}else{
+			$('#tt').tabs('add', {
+				title : ctitle,
+				href: chref,
+				closable : true
+			});
+		}
 	}
 	function removePanel() {
 		var tab = $('#tt').tabs('getSelected');
@@ -67,9 +72,9 @@
 		<div class="easyui-accordion" data-options="fit:true,border:false">
 			<div title="数据核对" style="padding: 10px;" data-options="selected:true">
 				<a href="javascript:void(0)" class="easyui-linkbutton"
-					data-options="plain:true,iconCls:'icon-mini-add'" onclick="addPanel('人员信息核对')">
+					data-options="plain:true,iconCls:'icon-mini-add'" onclick="addPanel('人员信息核对','page/check/querymemberinfoinit.action')">
 					人员信息核对</a> <a href="javascript:void(0)" class="easyui-linkbutton"
-					data-options="plain:true,iconCls:'icon-mini-add'" onclick="addPanel('慢性病状态核对')">慢性病状态核对</a>
+					data-options="plain:true,iconCls:'icon-mini-add'" onclick="addPanel('慢性病状态核对','')">慢性病状态核对</a>
 			</div>				
 			<div title="查询分析" style="padding: 10px">
 				查询分析
