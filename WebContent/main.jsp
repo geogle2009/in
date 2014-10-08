@@ -48,7 +48,7 @@
 		}
 	}
 </script>
-<title>医保接口平台aaaa</title>
+<title>医保接口平台</title>
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false"
