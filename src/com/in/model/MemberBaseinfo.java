@@ -2,6 +2,7 @@ package com.in.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -56,7 +57,7 @@ public class MemberBaseinfo implements Serializable {
 
 	@Column(name="MASTER_NAME", length=50)
 	private String masterName;
-
+	@Id
 	@Column(name="MEMBER_ID", length=50)
 	private String memberId;
 

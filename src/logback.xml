@@ -31,10 +31,10 @@
 	<logger name="com.in" level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
-	<logger name="com.in" level="DEBUG" additivity="false">
+	<logger name="com.in" level="ALL" additivity="false">
 		<appender-ref ref="FILE" />
 	</logger>
-	<root level="INFO">
+	<root level="ALL">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>

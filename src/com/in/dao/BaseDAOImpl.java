@@ -1,6 +1,8 @@
 package com.in.dao;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -8,6 +10,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.in.dto.MemberDTO;
 
 @Repository("baseDAO")
 @SuppressWarnings("all")
@@ -172,7 +176,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 	}
 
 	@Override
-	public List<Object> findJDBCSql(String sql, Object[] param) {
+	public List findJDBCSql(String sql, Object[] param) {
 		Query q = this.getCurrentSession().createSQLQuery(sql);
 		if (param != null && param.length > 0) {
 			for (int i = 0; i < param.length; i++) {
@@ -181,15 +185,22 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 		}
 		return q.list();
 	}
+
 	@Override
 	public Long countJDBCsql(String sql, Object[] param) {
-		Query q = this.getCurrentSession().createQuery(sql);
+		Query q = this.getCurrentSession().createSQLQuery(sql);
 		if (param != null && param.length > 0) {
 			for (int i = 0; i < param.length; i++) {
 				q.setParameter(i, param[i]);
 			}
 		}
-		return (Long) q.uniqueResult();
+		BigDecimal b=new BigDecimal(0);
+		for (Iterator iterator = q.list().iterator(); iterator.hasNext();) {
+			//Object[] s = (Object[]) iterator.next();
+			 
+			b =(BigDecimal)iterator.next();
+		}
+		return  b.longValue();
 	}
 
 }

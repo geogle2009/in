@@ -21,7 +21,7 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>jquery/themes/icon.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=basePath%>jquery/demo.css">
+	href="<%=basePath%>jquery/demo/demo.css">
 <script type="text/javascript" src="<%=basePath%>jquery/jquery.min.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>jquery/jquery.easyui.min.js"></script>

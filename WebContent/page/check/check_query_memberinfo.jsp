@@ -16,34 +16,82 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=basePath%>jquery/themes/icon.css">
 <link rel="stylesheet" type="text/css"
-	href="<%=basePath%>jquery/demo.css">
+	href="<%=basePath%>jquery/demo/demo.css">
 <script type="text/javascript" src="<%=basePath%>jquery/jquery.min.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>jquery/jquery.easyui.min.js"></script>
-<title>核对人员信息aaa</title>
+<title>核对人员信息</title>
 
 
 </head>
 <body>
-	<div style="padding: 1px 1px 1px 1px">
-		<form id="check_query_memberinfo" method="post" action="page/check/querymemberinfo.action">
+<form id="check_query_memberinfo" >
+			<table cellpadding="1" width="90%">
+				<tr>
+					<td>家庭编号</td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="name" data-options=""></input></td>
+
+					<td>姓名</td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="name" data-options=""></input></td>
+
+					<td>身份证号</td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="email" data-options=""></input></td>
+
+					<td>医保卡号</td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="email" data-options=""></input></td>
+
+					<td>所属机构</td>
+					<td><select class="easyui-combobox" name="language"><option
+								value="ar">Arabic</option>
+							<option value="bg">Bulgarian</option>
+							<option value="ca">Catalan</option>
+							<option value="zh-cht">Chinese Traditional</option>
+					</select></td>
+					<td><a href="javascript:void(0)" class="easyui-linkbutton"
+						onclick="submitForm()">查询</a> <a href="javascript:void(0)"
+						class="easyui-linkbutton" onclick="clearForm()">导出</a></td>
+				</tr>
+			</table>
+		</form>
+<table id="tt" class="easyui-datagrid" style="width:90%;height:90%"
+            url="<%=basePath%>page/check/querymemberinfo.action"
+            title="Load Data" iconCls="icon-save"
+            rownumbers="true" pagination="true">
+        <thead>
+            <tr>
+               <th field="familyno"  align="center">家庭编号</th>
+				<th field="membername"  align="center">姓名</th>
+				<th field="paperid" align="center">身份证号</th>
+				<th field="ssn" align="center">医保卡号</th>
+				<th field="personstate" align="center">医保卡号</th>
+				<th field="assistType" align="center">医保卡号</th>
+				<th field="asort" align="center">医保卡号</th>
+            </tr>
+        </thead>
+    </table>
+	<%-- <div style="padding: 1px 1px 1px 1px">
+		<form id="check_query_memberinfo" >
 			<table cellpadding="1" width="100%">
 				<tr>
 					<td>家庭编号</td>
-					<td><input size="12" class="easyui-textbox" type="text" name="name"
-						data-options=""></input></td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="name" data-options=""></input></td>
 
 					<td>姓名</td>
-					<td><input size="12"  class="easyui-textbox" type="text" name="name"
-						data-options=""></input></td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="name" data-options=""></input></td>
 
 					<td>身份证号</td>
-					<td><input size="12"  class="easyui-textbox" type="text" name="email"
-						data-options=""></input></td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="email" data-options=""></input></td>
 
 					<td>医保卡号</td>
-					<td><input size="12"  class="easyui-textbox" type="text" name="email"
-						data-options=""></input></td>
+					<td><input size="12" class="easyui-textbox" type="text"
+						name="email" data-options=""></input></td>
 
 					<td>所属机构</td>
 					<td><select class="easyui-combobox" name="language"><option
@@ -59,16 +107,19 @@
 			</table>
 		</form>
 	</div>
-	<table id="list_data" class="easyui-datagrid" style="width:100%; padding: 10px 10px 10px 10px;">
-	<thead>
-		<tr>
-			<th field="familyno" width="80" align="center">家庭编号</th>
-			<th field="name" width="100" align="center">姓名</th>
-			<th field="paperid" width="80" align="center">身份证号</th>
-			<th field="ssn" width="80" align="center">医保卡号</th>
-			<th field="onno" width="80" align="center">所属机构</th>
-		</tr>
-	</thead>
+	<table id="list_data" class="easyui-datagrid"
+		style="width: 100%; padding: 10px 10px 10px 10px;">
+		<thead>
+			<tr>
+				<th field="familyno"  align="center">家庭编号</th>
+				<th field="name"  align="center">姓名</th>
+				<th field="paperid" align="center">身份证号</th>
+				<th field="ssn" align="center">医保卡号</th>
+				<th field="personstate" align="center">医保卡号</th>
+				<th field="assistType" align="center">医保卡号</th>
+				<th field="asort" align="center">医保卡号</th>
+			</tr>
+		</thead>
 	</table>
 	<script>
 	//datagrid初始化  
@@ -82,32 +133,33 @@
 	    border: true,  
 	    collapsible:false,//是否可折叠的  
 	    fit: true,//自动大小  
-	    url:'page/check/querymemberinfo.action',  
-	    //sortName: 'code',  
-	    //sortOrder: 'desc',  
-	    remoteSort:false,   
-	    idField:'fldId',  
-	    singleSelect:false,//是否单选  
-	    pagination:true,//分页控件  
-	    rownumbers:true,//行号  
-	    frozenColumns:[[  
-	        {field:'ck',checkbox:true}  
-	    ]] 
-	}); 
-	//设置分页控件  
-	var p = $('#list_data').datagrid('getPager');  
-	$(p).pagination({  
-	    pageSize: 10,//每页显示的记录条数，默认为10  
-	    pageList: [5,10,15],//可以设置每页记录条数的列表  
-	    beforePageText: '第',//页数文本框前显示的汉字  
-	    afterPageText: '页    共 {pages} 页',  
-	    displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',  
-	    /*onBeforeRefresh:function(){ 
-	        $(this).pagination('loading'); 
-	        alert('before refresh'); 
-	        $(this).pagination('loaded'); 
-	    }*/ 
-	});  
-	</script>
+	    url:'<%=basePath%>page/check/querymemberinfo.action',
+			//sortName: 'code',  
+			//sortOrder: 'desc',  
+			remoteSort : false,
+			idField : 'memberId',
+			singleSelect : false,//是否单选  
+			pagination : true,//分页控件  
+			rownumbers : true,//行号  
+			frozenColumns : [ [ {
+				field : 'ck',
+				checkbox : false
+			} ] ]
+		});
+		//设置分页控件  
+		var p = $('#list_data').datagrid('getPager');
+		$(p).pagination({
+			pageSize : 10,//每页显示的记录条数，默认为10  
+			pageList : [ 5, 10, 15 ],//可以设置每页记录条数的列表  
+			beforePageText : '第',//页数文本框前显示的汉字  
+			afterPageText : '页    共 {pages} 页',
+			displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+		/*onBeforeRefresh:function(){ 
+		    $(this).pagination('loading'); 
+		    alert('before refresh'); 
+		    $(this).pagination('loaded'); 
+		}*/
+		});
+	</script> --%>
 </body>
 </html>
