@@ -156,11 +156,21 @@ public interface BaseDAO<T> {
 	public Integer executeHql(String hql, Object[] param);
 
 	/**
-	 * 执行HQL语句
+	 * 执行原生sQL语句
 	 * 
-	 * @param hql
+	 * @param sql
 	 * @param param
 	 * @return
 	 */
+	public List<Object> findJDBCSql(String sql, Object[] param);
 
+	/**
+	 * 执行原生sQL语句 查询总数
+	 * 
+	 * @param sql
+	 * @param param
+	 * @return
+	 * 
+	 */
+	public Long countJDBCsql(String sql, Object[] param);
 }

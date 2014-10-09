@@ -171,4 +171,25 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 		return q.executeUpdate();
 	}
 
+	@Override
+	public List<Object> findJDBCSql(String sql, Object[] param) {
+		Query q = this.getCurrentSession().createSQLQuery(sql);
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
+			}
+		}
+		return q.list();
+	}
+	@Override
+	public Long countJDBCsql(String sql, Object[] param) {
+		Query q = this.getCurrentSession().createQuery(sql);
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
+			}
+		}
+		return (Long) q.uniqueResult();
+	}
+
 }
