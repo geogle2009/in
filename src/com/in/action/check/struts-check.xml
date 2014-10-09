@@ -21,7 +21,9 @@
 			<result name="success">/page/check/check_query_memberinfo.jsp</result>
 		</action>
 		<action name="querymemberinfo" method="queryMemberInfo" class="checkAction">
-			<result name="success">/page/check/check_query_memberinfo.jsp</result>
+			<result type="json">  
+                <param name="root">result</param>  
+            </result>
 		</action>
 	</package>
 </struts>   
