@@ -11,7 +11,7 @@
 	<!-- 按照每天生成日志文件 -->
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${log.base}_test.log</file>
+		<file>${log.base}_test11.log</file>
 
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
 			<fileNamePattern>tests.%i.log.zip</fileNamePattern>
@@ -28,13 +28,13 @@
 			</pattern>
 		</encoder>
 	</appender>
-	<logger name="com.in" level="INFO" additivity="false">
+	<logger name="com.in" level="DEBUG" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
-	<logger name="com.in" level="ALL" additivity="false">
+	<logger name="com.in" level="ERROR" additivity="false">
 		<appender-ref ref="FILE" />
 	</logger>
-	<root level="ALL">
+	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>

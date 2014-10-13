@@ -221,7 +221,7 @@ public class MemberDTO {
 		return ssn;
 	}
 	public void setSsn(String ssn) {
-		this.ssn = ssn;
+		this.ssn = ssn!=null?ssn:"";  
 	}
 
 }

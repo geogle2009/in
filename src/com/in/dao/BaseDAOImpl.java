@@ -176,31 +176,29 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 	}
 
 	@Override
-	public List findJDBCSql(String sql, Object[] param) {
+	public List findJDBCSql(String sql, List<Object> param) {
 		Query q = this.getCurrentSession().createSQLQuery(sql);
-		if (param != null && param.length > 0) {
-			for (int i = 0; i < param.length; i++) {
-				q.setParameter(i, param[i]);
+		if (param != null && param.size() > 0) {
+			for (int i = 0; i < param.size(); i++) {
+				q.setParameter(i, param.get(i));
 			}
 		}
 		return q.list();
 	}
 
 	@Override
-	public Long countJDBCsql(String sql, Object[] param) {
+	public Long countJDBCsql(String sql, List<Object> param) {
 		Query q = this.getCurrentSession().createSQLQuery(sql);
-		if (param != null && param.length > 0) {
-			for (int i = 0; i < param.length; i++) {
-				q.setParameter(i, param[i]);
+		if (param != null && param.size() > 0) {
+			for (int i = 0; i < param.size(); i++) {
+				q.setParameter(i, param.get(i));
 			}
 		}
-		BigDecimal b=new BigDecimal(0);
+		BigDecimal b = new BigDecimal(0);
 		for (Iterator iterator = q.list().iterator(); iterator.hasNext();) {
-			//Object[] s = (Object[]) iterator.next();
-			 
-			b =(BigDecimal)iterator.next();
+			b = (BigDecimal) iterator.next();
 		}
-		return  b.longValue();
+		return b.longValue();
 	}
 
 }

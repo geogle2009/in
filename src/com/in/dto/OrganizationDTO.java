@@ -1,46 +1,34 @@
-package com.in.model;
+package com.in.dto;
 
-import java.io.Serializable;
-import javax.persistence.*;
+public class OrganizationDTO {
 
-/**
- * The persistent class for the SYS_T_ORGANIZATION database table.
- * 
- */
-@Entity
-@Table(name = "SYS_T_ORGANIZATION")
-public class SysTOrganization implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	@Column(length = 128)
 	private String asorgname;
 
-	@Column(name = "\"DEPTH\"", length = 128)
 	private String depth;
 
-	@Column(length = 128)
 	private String fullname;
-	@Id
-	@Column(name = "ORGANIZATION_ID", length = 128)
+
 	private String organizationId;
 
-	@Column(length = 128)
 	private String parentorgid;
 
-	@Column(name = "SEQ_ID", length = 128)
 	private String seqId;
 
-	@Column(length = 128)
 	private String serialnumber;
 
-	@Column(length = 128)
 	private String status;
+	private String orglevel;
 
-	public SysTOrganization() {
+	public String getOrglevel() {
+		return orglevel;
+	}
+
+	public void setOrglevel(String orglevel) {
+		this.orglevel = orglevel;
 	}
 
 	public String getAsorgname() {
-		return this.asorgname;
+		return asorgname;
 	}
 
 	public void setAsorgname(String asorgname) {
@@ -48,7 +36,7 @@ public class SysTOrganization implements Serializable {
 	}
 
 	public String getDepth() {
-		return this.depth;
+		return depth;
 	}
 
 	public void setDepth(String depth) {
@@ -56,7 +44,7 @@ public class SysTOrganization implements Serializable {
 	}
 
 	public String getFullname() {
-		return this.fullname;
+		return fullname;
 	}
 
 	public void setFullname(String fullname) {
@@ -64,7 +52,7 @@ public class SysTOrganization implements Serializable {
 	}
 
 	public String getOrganizationId() {
-		return this.organizationId;
+		return organizationId;
 	}
 
 	public void setOrganizationId(String organizationId) {
@@ -72,7 +60,7 @@ public class SysTOrganization implements Serializable {
 	}
 
 	public String getParentorgid() {
-		return this.parentorgid;
+		return parentorgid;
 	}
 
 	public void setParentorgid(String parentorgid) {
@@ -80,7 +68,7 @@ public class SysTOrganization implements Serializable {
 	}
 
 	public String getSeqId() {
-		return this.seqId;
+		return seqId;
 	}
 
 	public void setSeqId(String seqId) {
@@ -88,7 +76,7 @@ public class SysTOrganization implements Serializable {
 	}
 
 	public String getSerialnumber() {
-		return this.serialnumber;
+		return serialnumber;
 	}
 
 	public void setSerialnumber(String serialnumber) {
@@ -96,7 +84,7 @@ public class SysTOrganization implements Serializable {
 	}
 
 	public String getStatus() {
-		return this.status;
+		return status;
 	}
 
 	public void setStatus(String status) {

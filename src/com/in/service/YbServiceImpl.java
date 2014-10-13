@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.in.dao.BaseDAO;
 import com.in.dto.MemberDTO;
+import com.in.dto.OrganizationDTO;
 import com.in.dto.UserDTO;
 import com.in.model.MemberBaseinfo;
+import com.in.model.Orglist;
 import com.in.model.SysTEmployee;
+import com.in.model.SysTOrganization;
 
 @Service("ybService")
 public class YbServiceImpl implements YbService {
@@ -23,6 +26,10 @@ public class YbServiceImpl implements YbService {
 	private BaseDAO<SysTEmployee> sysTEmployeeDAO;
 	@Resource
 	private BaseDAO<MemberBaseinfo> memberBaseinfoDAO;
+	@Resource
+	private BaseDAO<SysTOrganization> SysTOrganizationDAO;
+	@Resource
+	private BaseDAO<Orglist> orglistDAO;
 
 	public UserDTO findUser(UserDTO userDTO) {
 		String hql = "";
@@ -43,7 +50,7 @@ public class YbServiceImpl implements YbService {
 		List<SysTEmployee> rs = sysTEmployeeDAO.find(hql, param);
 		if (null != rs && rs.size() > 0) {
 			SysTEmployee sysTEmployee = rs.get(0);
-			BeanUtils.copyProperties(userDTO, sysTEmployee);
+			BeanUtils.copyProperties(sysTEmployee, userDTO);
 		} else {
 			userDTO = null;
 		}
@@ -56,14 +63,14 @@ public class YbServiceImpl implements YbService {
 	 * MEMBER_ID 121031 DS 1 FAMILYNO 22020102010247 MEMBERNAME ÕÅ²© PAPERID
 	 * 220202810813422 SSN 677939 PERSONSTATE Õý³£ ASSIST_TYPE 00 ASORT 0 NUM 1
 	 */
-	public List<MemberDTO> finMembers(String sql) {
+	public List<MemberDTO> finMembers(String sql,List<Object> param) {
 		List<MemberDTO> resultlist = new ArrayList<MemberDTO>();
-		Object[] param = null;
+		
 		List rs = memberBaseinfoDAO.findJDBCSql(sql, param);
 		for (Iterator iterator = rs.iterator(); iterator.hasNext();) {
 			MemberDTO e = new MemberDTO();
 			Object[] s = (Object[]) iterator.next();
-			e.setMemberId(" " + s[0]);
+			e.setMemberId("" + s[0]);
 			e.setDs("" + s[1]);
 			e.setFamilyno("" + s[2]);
 			e.setMembername("" + s[3]);
@@ -72,22 +79,37 @@ public class YbServiceImpl implements YbService {
 			e.setPersonstate("" + s[6]);
 			e.setAssistType("" + s[7]);
 			e.setAsort(new BigDecimal(s[8].toString()));
-			System.out.println(e.getMembername());
 			resultlist.add(e);
 		}
-		
+
 		return resultlist;
 	}
 
 	@Override
-	public String finMembersCount(String sql) {
-		Object[] param = null;
+	public String finMembersCount(String sql,List<Object> param) {
+		
 		Long cnt = memberBaseinfoDAO.countJDBCsql(sql, param);
 		if (null != cnt) {
-			return cnt+"";
+			return cnt + "";
 		} else {
 			return "0";
 		}
 	}
 
+	public List<OrganizationDTO> findOrganlist(String onno) {
+		List<OrganizationDTO> resultlist = new ArrayList<OrganizationDTO>();
+		String hql = "select o from Orglist o where o.organizationId = ? or o.parentorgid = ? order by  o.organizationId";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = onno;
+		param[1] = onno;
+		List<Orglist> rs = this.orglistDAO.find(hql, param);
+		for (Orglist s : rs) {
+			OrganizationDTO e = new OrganizationDTO();
+			BeanUtils.copyProperties(s, e);
+			resultlist.add(e);
+		}
+		return resultlist;
+
+	}
 }

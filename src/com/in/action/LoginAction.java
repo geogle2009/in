@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import com.in.dto.UserDTO;
-import com.in.model.SysTEmployee;
 import com.in.service.YbService;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -31,8 +30,7 @@ public class LoginAction extends ActionSupport {
 		userDTO = ybjkService.findUser(userDTO);
 		log.info("======info>>" + username + ">>>" + password);
 		if (null != userDTO) {
-			UserDTO user = new UserDTO();
-			ActionContext.getContext().getSession().put("user", user);
+			ActionContext.getContext().getSession().put("user", userDTO);
 			return SUCCESS;
 		} else {
 			return "nouser";

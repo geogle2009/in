@@ -25,6 +25,7 @@
 <script type="text/javascript" src="<%=basePath%>jquery/jquery.min.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>jquery/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="<%=basePath%>jquery/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	var index = 0;
 	function addPanel(ctitle,chref) {

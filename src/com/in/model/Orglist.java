@@ -1,28 +1,32 @@
 package com.in.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
- * The persistent class for the SYS_T_ORGANIZATION database table.
+ * The persistent class for the ORGLIST database table.
  * 
  */
 @Entity
-@Table(name = "SYS_T_ORGANIZATION")
-public class SysTOrganization implements Serializable {
+@Table(name = "ORGLIST")
+public class Orglist implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 128)
 	private String asorgname;
-
-	@Column(name = "\"DEPTH\"", length = 128)
-	private String depth;
 
 	@Column(length = 128)
 	private String fullname;
 	@Id
 	@Column(name = "ORGANIZATION_ID", length = 128)
 	private String organizationId;
+
+	@Column(length = 128)
+	private String orglevel;
 
 	@Column(length = 128)
 	private String parentorgid;
@@ -36,7 +40,7 @@ public class SysTOrganization implements Serializable {
 	@Column(length = 128)
 	private String status;
 
-	public SysTOrganization() {
+	public Orglist() {
 	}
 
 	public String getAsorgname() {
@@ -45,14 +49,6 @@ public class SysTOrganization implements Serializable {
 
 	public void setAsorgname(String asorgname) {
 		this.asorgname = asorgname;
-	}
-
-	public String getDepth() {
-		return this.depth;
-	}
-
-	public void setDepth(String depth) {
-		this.depth = depth;
 	}
 
 	public String getFullname() {
@@ -69,6 +65,14 @@ public class SysTOrganization implements Serializable {
 
 	public void setOrganizationId(String organizationId) {
 		this.organizationId = organizationId;
+	}
+
+	public String getOrglevel() {
+		return this.orglevel;
+	}
+
+	public void setOrglevel(String orglevel) {
+		this.orglevel = orglevel;
 	}
 
 	public String getParentorgid() {
