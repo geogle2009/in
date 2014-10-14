@@ -1,6 +1,8 @@
 package com.in.action.check;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import net.sf.json.processors.JsonValueProcessor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +21,7 @@ import com.in.dto.MemberDTO;
 import com.in.dto.OrganizationDTO;
 import com.in.dto.UserDTO;
 import com.in.service.YbService;
+import com.in.util.DateJsonValueProcessor;
 import com.in.util.Pager;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -38,8 +43,12 @@ public class CheckAction extends ActionSupport {
 	private String page;// 当前第几页
 
 	private MemberDTO memberDTO;
+	
+	private MemberDTO mdto;
 
 	private List<OrganizationDTO> orgs;
+	
+	private String key;
 
 	@SuppressWarnings("rawtypes")
 	public String queryMemberInfoInit() {
@@ -118,6 +127,21 @@ public class CheckAction extends ActionSupport {
 		log.info("进入人员信息核对页面---end---queryMemberInfo");
 		return SUCCESS;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String checkSSNInit(){
+		MemberDTO m = new MemberDTO();
+		m.setMemberId(key.substring(0,key.length()-1));
+		m.setDs(key.substring(key.length()-1));
+		MemberDTO mdto = ybjkService.findMemeber(m);
+/*		Map jsonMap = new HashMap();
+		jsonMap.put("mdto", mdto);
+		map = jsonMap;*/
+		JsonConfig config = new JsonConfig();
+		config.registerJsonValueProcessor(Date.class, new DateJsonValueProcessor("yyyy-MM-dd"));
+		result = JSONObject.fromObject(mdto,config);
+		return SUCCESS;
+	}
 
 	public JSONObject getResult() {
 		return result;
@@ -167,5 +191,21 @@ public class CheckAction extends ActionSupport {
 
 	public void setOrgs(List<OrganizationDTO> orgs) {
 		this.orgs = orgs;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public MemberDTO getMdto() {
+		return mdto;
+	}
+
+	public void setMdto(MemberDTO mdto) {
+		this.mdto = mdto;
 	}
 }

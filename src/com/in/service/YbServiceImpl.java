@@ -112,4 +112,16 @@ public class YbServiceImpl implements YbService {
 		return resultlist;
 
 	}
+	
+	public MemberDTO findMemeber(MemberDTO memberDTO){
+		MemberDTO mdto = new MemberDTO();
+		String hql = "select m from MemberBaseinfo m where m.memberId = ? and m.ds = ? ";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = memberDTO.getMemberId();
+		param[1] = memberDTO.getDs();
+		List<MemberBaseinfo> rs = memberBaseinfoDAO.find(hql, param);
+		BeanUtils.copyProperties(rs.get(0), mdto);
+		return mdto;
+	}
 }

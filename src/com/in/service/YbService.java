@@ -14,4 +14,6 @@ public interface YbService {
 	public String finMembersCount(String sql, List<Object> param);
 
 	public List<OrganizationDTO> findOrganlist(String onno);
+	
+	public MemberDTO findMemeber(MemberDTO memberDTO);
 }

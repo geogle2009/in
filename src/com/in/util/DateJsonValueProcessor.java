@@ -1,12 +1,13 @@
 package com.in.util;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import net.sf.json.JsonConfig;
+import net.sf.json.processors.JsonValueProcessor;
 
-public class DateJsonValueProcessor {
+public class DateJsonValueProcessor implements JsonValueProcessor{
 
 	/**
 	 * 字母 日期或时间元素 表示 示例 <br>
@@ -71,7 +72,7 @@ public class DateJsonValueProcessor {
 		if (value == null) {
 			return "";
 		} else {
-			return dateFormat.format((Timestamp) value);
+			return dateFormat.format((Date) value);
 		}
 	}
 
