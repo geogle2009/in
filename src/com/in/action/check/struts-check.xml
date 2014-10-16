@@ -30,5 +30,25 @@
 				<param name="root">result</param>
 			</result>
 		</action>
+		<action name="changstatusinit" method="changStatusInit" class="checkAction">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+		<action name="changstatus" method="changStatus" class="checkAction">
+			<result type="json">
+				<param name="root">u_result</param>
+			</result>
+		</action>
+		<action name="getguarantee" method="getGuarantee" class="checkAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
+		<action name="gettoguarantee" method="getToGuarantee" class="checkAction">
+			<result type="json">
+				<param name="root">map</param>
+			</result>
+		</action>
 	</package>
 </struts>   

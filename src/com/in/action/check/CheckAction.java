@@ -1,6 +1,6 @@
 package com.in.action.check;
 
-import java.sql.Timestamp;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,12 +11,13 @@ import javax.annotation.Resource;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
-import net.sf.json.processors.JsonValueProcessor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import com.in.dto.BillCsDTO;
+import com.in.dto.BillNcDTO;
 import com.in.dto.MemberDTO;
 import com.in.dto.OrganizationDTO;
 import com.in.dto.UserDTO;
@@ -49,6 +50,8 @@ public class CheckAction extends ActionSupport {
 	private List<OrganizationDTO> orgs;
 	
 	private String key;
+	
+	private String u_result;
 
 	@SuppressWarnings("rawtypes")
 	public String queryMemberInfoInit() {
@@ -143,6 +146,82 @@ public class CheckAction extends ActionSupport {
 		return SUCCESS;
 	}
 
+	public String changStatusInit(){
+		//获取当前救助状态
+		String ds = key.split("-")[1];
+		String memberid = key.split("-")[2];
+		MemberDTO m = new MemberDTO();
+		m.setMemberId(memberid);
+		m.setDs(ds);
+		MemberDTO mdto = ybjkService.findMemeber(m);
+		JsonConfig config = new JsonConfig();
+		config.registerJsonValueProcessor(Date.class, new DateJsonValueProcessor("yyyy-MM-dd"));
+		result = JSONObject.fromObject(mdto,config);
+		return SUCCESS;
+	}
+	
+	public String changStatus(){
+		//修改当前状态
+		String memberid = key.split("-")[0];
+		String ds = key.split("-")[1];
+		String assistType = key.split("-")[2];
+		String asort = key.split("-")[3];
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setMemberId(memberid);
+		memberDTO.setDs(ds);
+		memberDTO.setAssistType(assistType);
+		memberDTO.setAsort(new BigDecimal(asort));
+		int u = ybjkService.updateMember(memberDTO);
+		JSONObject json = new JSONObject();
+		json.put("u", u);
+		u_result = json.toString();
+		return SUCCESS;
+	}
+	
+	//获取前四个月的救助情况——固定保障
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getGuarantee(){
+		log.info("进入人员救助状态变更页面---begin---getGuarantee");
+		String familyno = key.split("-")[0];
+		String ds = key.split("-")[1];
+		Map jsonMap = new HashMap();
+		if("1".equals(ds)){
+			BillCsDTO billCsDTO = new BillCsDTO();
+			billCsDTO.setBarFamilyno(familyno);
+			billCsDTO.setStId("1");
+			List<BillCsDTO> billcs = ybjkService.findBillCs(billCsDTO);
+			jsonMap.put("rows", billcs);
+		}else if("2".equals(ds)){
+			BillNcDTO billNcDTO = new BillNcDTO();
+			billNcDTO.setBarFamilyno(familyno);
+			billNcDTO.setStId("1");
+			List<BillNcDTO> billnc = ybjkService.findBillNc(billNcDTO);
+			jsonMap.put("rows", billnc);
+		}
+		map = jsonMap;
+		log.info("进入人员救助状态变更页面---end---getGuarantee");
+		return SUCCESS;
+	}
+	
+	//获取前四个月的救助情况——再保障
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getToGuarantee(){
+		log.info("进入人员救助状态变更页面---begin---getToGuarantee");
+		String familyno = key.split("-")[0];
+		String ds = key.split("-")[1];
+		Map jsonMap = new HashMap();
+		if("1".equals(ds)){
+			BillCsDTO billCsDTO = new BillCsDTO();
+			billCsDTO.setBarFamilyno(familyno);
+			billCsDTO.setStId("31");
+			List<BillCsDTO> billcs = ybjkService.findBillCs(billCsDTO);
+			jsonMap.put("rows", billcs);
+		}
+		map = jsonMap;
+		log.info("进入人员救助状态变更页面---end---getToGuarantee");
+		return SUCCESS;
+	}
+	
 	public JSONObject getResult() {
 		return result;
 	}
@@ -207,5 +286,13 @@ public class CheckAction extends ActionSupport {
 
 	public void setMdto(MemberDTO mdto) {
 		this.mdto = mdto;
+	}
+
+	public String getU_result() {
+		return u_result;
+	}
+
+	public void setU_result(String u_result) {
+		this.u_result = u_result;
 	}
 }

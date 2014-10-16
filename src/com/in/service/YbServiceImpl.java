@@ -11,9 +11,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.in.dao.BaseDAO;
+import com.in.dto.BillCsDTO;
+import com.in.dto.BillNcDTO;
 import com.in.dto.MemberDTO;
 import com.in.dto.OrganizationDTO;
 import com.in.dto.UserDTO;
+import com.in.model.BillCs;
+import com.in.model.BillNc;
 import com.in.model.MemberBaseinfo;
 import com.in.model.Orglist;
 import com.in.model.SysTEmployee;
@@ -30,6 +34,10 @@ public class YbServiceImpl implements YbService {
 	private BaseDAO<SysTOrganization> SysTOrganizationDAO;
 	@Resource
 	private BaseDAO<Orglist> orglistDAO;
+	@Resource
+	private BaseDAO<BillCs> billCsDAO;
+	@Resource
+	private BaseDAO<BillNc> billNcDAO;
 
 	public UserDTO findUser(UserDTO userDTO) {
 		String hql = "";
@@ -123,5 +131,50 @@ public class YbServiceImpl implements YbService {
 		List<MemberBaseinfo> rs = memberBaseinfoDAO.find(hql, param);
 		BeanUtils.copyProperties(rs.get(0), mdto);
 		return mdto;
+	}
+	
+	public List<BillCsDTO> findBillCs(BillCsDTO billCsDTO){
+		List<BillCsDTO> resultlist = new ArrayList<BillCsDTO>();
+		String hql = "select c from BillCs as c where c.barFamilyno = ? and c.stId = ? order by c.barSubject desc";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = billCsDTO.getBarFamilyno();
+		param[1] = billCsDTO.getStId();
+		List<BillCs> rs = billCsDAO.find_top(hql, param, 0, 4);
+		for (BillCs s : rs) {
+			BillCsDTO e = new BillCsDTO();
+			BeanUtils.copyProperties(s, e);
+			resultlist.add(e);
+		}
+		return resultlist;
+	}
+	
+	public List<BillNcDTO> findBillNc(BillNcDTO billNcDTO){
+		List<BillNcDTO> resultlist = new ArrayList<BillNcDTO>();
+		String hql = "select n from BillNc as n where n.barFamilyno = ? and n.stId = ? order by n.barSubject desc";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = billNcDTO.getBarFamilyno();
+		param[1] = billNcDTO.getStId();
+		List<BillNc> rs = billNcDAO.find_top(hql, param, 0, 4);
+		for (BillNc s : rs) {
+			BillNcDTO e = new BillNcDTO();
+			BeanUtils.copyProperties(s, e);
+			resultlist.add(e);
+		}
+		return resultlist;
+	}
+	
+	public int updateMember(MemberDTO memberDTO){
+		int u=0;
+		String hql = "update MemberBaseinfo m set m.assistType= ? ,m.asort= ? where m.memberId= ? and m.ds= ? ";
+		Object[] param = null;
+		param = new Object[4];
+		param[0] = memberDTO.getAssistType();
+		param[1] = memberDTO.getAsort();
+		param[2] = memberDTO.getMemberId();
+		param[3] = memberDTO.getDs();
+		u = memberBaseinfoDAO.update(hql,param);
+		return u;
 	}
 }

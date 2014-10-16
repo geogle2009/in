@@ -25,6 +25,14 @@ public interface BaseDAO<T> {
 	 * @param o
 	 */
 	public void update(T o);
+	
+	/**
+	 * 更新
+	 * 
+	 * @param hql
+	 * @return
+	 */
+	public int update(String hql, Object[] param);
 
 	/**
 	 * 保存或更新对象
@@ -58,6 +66,17 @@ public interface BaseDAO<T> {
 	 * @return
 	 */
 	public List<T> find(String hql, List<Object> param);
+	
+	/**
+	 * 查询集合
+	 * 
+	 * @param hql
+	 * @param param
+	 * @param fr
+	 * @param maxr
+	 * @return
+	 */
+	public List<T> find_top(String hql, Object[] param, int fr, int maxr);
 
 	/**
 	 * 查询集合(带分页)

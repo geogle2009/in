@@ -39,9 +39,20 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 	public void delete(T o) {
 		this.getCurrentSession().delete(o);
 	}
+	
 
 	public void update(T o) {
 		this.getCurrentSession().update(o);
+	}
+	
+	public int update(String hql, Object[] param){
+		Query q = this.getCurrentSession().createQuery(hql);
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
+			}
+		}
+		return q.executeUpdate();
 	}
 
 	public void saveOrUpdate(T o) {
@@ -69,6 +80,18 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 				q.setParameter(i, param.get(i));
 			}
 		}
+		return q.list();
+	}
+	
+	public List<T> find_top(String hql, Object[] param, int fr, int maxr) {
+		Query q = this.getCurrentSession().createQuery(hql);
+		if (param != null && param.length > 0) {
+			for (int i = 0; i < param.length; i++) {
+				q.setParameter(i, param[i]);
+			}
+		}
+		q.setFirstResult(fr);
+		q.setMaxResults(maxr);
 		return q.list();
 	}
 
