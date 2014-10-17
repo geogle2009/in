@@ -44,13 +44,13 @@ public class CheckAction extends ActionSupport {
 	private String page;// 当前第几页
 
 	private MemberDTO memberDTO;
-	
+
 	private MemberDTO mdto;
 
 	private List<OrganizationDTO> orgs;
-	
+
 	private String key;
-	
+
 	private String u_result;
 
 	@SuppressWarnings("rawtypes")
@@ -72,18 +72,13 @@ public class CheckAction extends ActionSupport {
 		int end = pager.end;
 		List<Object> param = new ArrayList<Object>();
 		String sqlwhere = "";
-		String orderwhere = " order by t.familyno";
-
+		String orderwhere = " order by t.area";
+	
 		if (null != memberDTO) {
-			if (memberDTO.getOnNo().length() == 4) {
-				sqlwhere = " and  t.on_no like ?  and t.on_no like ? ";
-				param.add(memberDTO.getOnNo() + "%");
-				param.add(memberDTO.getOnNo() + "%");
-			} else {
-				sqlwhere = " and t.area = ?  and t.on_no like ? ";
-				param.add(memberDTO.getOnNo());
-				param.add(memberDTO.getOnNo() + "%");
-			}
+			
+			sqlwhere = " and t.area like ?";
+			param.add(memberDTO.getOnNo() + "%");
+			
 			if (!"".equals(memberDTO.getFamilyno())) {
 				sqlwhere = sqlwhere + " and t.familyno=? ";
 				param.add(memberDTO.getFamilyno());
@@ -105,14 +100,14 @@ public class CheckAction extends ActionSupport {
 			}
 
 		}
-		param.add(start);
 		param.add(end);
-
-		String sql = "SELECT * FROM (SELECT t.member_id,t.ds,t.familyno,t.membername,t.paperid,t.ssn,t.personstate,t.assist_type,t.asort, row_number() over(ORDER BY t.area) AS num "
+		param.add(start);
+		String sql = " SELECT *   FROM (SELECT a.*, ROWNUM rn FROM ( SELECT t.member_id,t.ds,t.familyno,t.membername,t.paperid,t.ssn,t.personstate,t.assist_type,t.asort "
 				+ " FROM member_baseinfo t where 1=1 "
 				+ sqlwhere
 				+ orderwhere
-				+ ") xx WHERE num BETWEEN ? AND ?";
+				+ " ) a WHERE ROWNUM <= ?)  WHERE rn >= ?";
+
 		String sqlcount = " SELECT count(1) as cnt FROM member_baseinfo t  where 1=1 "
 				+ sqlwhere;
 
@@ -130,24 +125,26 @@ public class CheckAction extends ActionSupport {
 		log.info("进入人员信息核对页面---end---queryMemberInfo");
 		return SUCCESS;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String checkSSNInit(){
+	public String checkSSNInit() {
 		MemberDTO m = new MemberDTO();
-		m.setMemberId(key.substring(0,key.length()-1));
-		m.setDs(key.substring(key.length()-1));
+		m.setMemberId(key.substring(0, key.length() - 1));
+		m.setDs(key.substring(key.length() - 1));
 		MemberDTO mdto = ybjkService.findMemeber(m);
-/*		Map jsonMap = new HashMap();
-		jsonMap.put("mdto", mdto);
-		map = jsonMap;*/
+		/*
+		 * Map jsonMap = new HashMap(); jsonMap.put("mdto", mdto); map =
+		 * jsonMap;
+		 */
 		JsonConfig config = new JsonConfig();
-		config.registerJsonValueProcessor(Date.class, new DateJsonValueProcessor("yyyy-MM-dd"));
-		result = JSONObject.fromObject(mdto,config);
+		config.registerJsonValueProcessor(Date.class,
+				new DateJsonValueProcessor("yyyy-MM-dd"));
+		result = JSONObject.fromObject(mdto, config);
 		return SUCCESS;
 	}
 
-	public String changStatusInit(){
-		//获取当前救助状态
+	public String changStatusInit() {
+		// 获取当前救助状态
 		String ds = key.split("-")[1];
 		String memberid = key.split("-")[2];
 		MemberDTO m = new MemberDTO();
@@ -155,13 +152,14 @@ public class CheckAction extends ActionSupport {
 		m.setDs(ds);
 		MemberDTO mdto = ybjkService.findMemeber(m);
 		JsonConfig config = new JsonConfig();
-		config.registerJsonValueProcessor(Date.class, new DateJsonValueProcessor("yyyy-MM-dd"));
-		result = JSONObject.fromObject(mdto,config);
+		config.registerJsonValueProcessor(Date.class,
+				new DateJsonValueProcessor("yyyy-MM-dd"));
+		result = JSONObject.fromObject(mdto, config);
 		return SUCCESS;
 	}
-	
-	public String changStatus(){
-		//修改当前状态
+
+	public String changStatus() {
+		// 修改当前状态
 		String memberid = key.split("-")[0];
 		String ds = key.split("-")[1];
 		String assistType = key.split("-")[2];
@@ -177,21 +175,21 @@ public class CheckAction extends ActionSupport {
 		u_result = json.toString();
 		return SUCCESS;
 	}
-	
-	//获取前四个月的救助情况——固定保障
+
+	// 获取前四个月的救助情况——固定保障
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getGuarantee(){
+	public String getGuarantee() {
 		log.info("进入人员救助状态变更页面---begin---getGuarantee");
 		String familyno = key.split("-")[0];
 		String ds = key.split("-")[1];
 		Map jsonMap = new HashMap();
-		if("1".equals(ds)){
+		if ("1".equals(ds)) {
 			BillCsDTO billCsDTO = new BillCsDTO();
 			billCsDTO.setBarFamilyno(familyno);
 			billCsDTO.setStId("1");
 			List<BillCsDTO> billcs = ybjkService.findBillCs(billCsDTO);
 			jsonMap.put("rows", billcs);
-		}else if("2".equals(ds)){
+		} else if ("2".equals(ds)) {
 			BillNcDTO billNcDTO = new BillNcDTO();
 			billNcDTO.setBarFamilyno(familyno);
 			billNcDTO.setStId("1");
@@ -202,15 +200,15 @@ public class CheckAction extends ActionSupport {
 		log.info("进入人员救助状态变更页面---end---getGuarantee");
 		return SUCCESS;
 	}
-	
-	//获取前四个月的救助情况——再保障
+
+	// 获取前四个月的救助情况——再保障
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String getToGuarantee(){
+	public String getToGuarantee() {
 		log.info("进入人员救助状态变更页面---begin---getToGuarantee");
 		String familyno = key.split("-")[0];
 		String ds = key.split("-")[1];
 		Map jsonMap = new HashMap();
-		if("1".equals(ds)){
+		if ("1".equals(ds)) {
 			BillCsDTO billCsDTO = new BillCsDTO();
 			billCsDTO.setBarFamilyno(familyno);
 			billCsDTO.setStId("31");
@@ -221,7 +219,7 @@ public class CheckAction extends ActionSupport {
 		log.info("进入人员救助状态变更页面---end---getToGuarantee");
 		return SUCCESS;
 	}
-	
+
 	public JSONObject getResult() {
 		return result;
 	}
