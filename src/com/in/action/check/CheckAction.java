@@ -220,6 +220,50 @@ public class CheckAction extends ActionSupport {
 		return SUCCESS;
 	}
 
+	//获取全部的救助情况——固定保障
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getAllGuarantee(){
+		log.info("进入查询救助记录页面---begin---getAllGuarantee");
+		String familyno = key.split("-")[0];
+		String ds = key.split("-")[1];
+		Map jsonMap = new HashMap();
+		if("1".equals(ds)){
+			BillCsDTO billCsDTO = new BillCsDTO();
+			billCsDTO.setBarFamilyno(familyno);
+			billCsDTO.setStId("1");
+			List<BillCsDTO> billcs = ybjkService.findALLBillCsByFNO(billCsDTO);
+			jsonMap.put("rows", billcs);
+		}else if("2".equals(ds)){
+			BillNcDTO billNcDTO = new BillNcDTO();
+			billNcDTO.setBarFamilyno(familyno);
+			billNcDTO.setStId("1");
+			List<BillNcDTO> billnc = ybjkService.findALLBillNcByFNO(billNcDTO);
+			jsonMap.put("rows", billnc);
+		}
+		map = jsonMap;
+		log.info("进入查询救助记录页面---end---getAllGuarantee");
+		return SUCCESS;
+	}
+	
+	//获取全部的救助情况——再保障
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getAllToGuarantee(){
+		log.info("进入查询救助记录页面---begin---getToGuarantee");
+		String familyno = key.split("-")[0];
+		String ds = key.split("-")[1];
+		Map jsonMap = new HashMap();
+		if("1".equals(ds)){
+			BillCsDTO billCsDTO = new BillCsDTO();
+			billCsDTO.setBarFamilyno(familyno);
+			billCsDTO.setStId("31");
+			List<BillCsDTO> billcs = ybjkService.findALLBillCsByFNO(billCsDTO);
+			jsonMap.put("rows", billcs);
+		}
+		map = jsonMap;
+		log.info("进入查询救助记录页面---end---getToGuarantee");
+		return SUCCESS;
+	}
+	
 	public JSONObject getResult() {
 		return result;
 	}

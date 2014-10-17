@@ -24,4 +24,8 @@ public interface YbService {
 	public List<BillNcDTO> findBillNc(BillNcDTO billNcDTO);
 	
 	public int updateMember(MemberDTO memberDTO);
+	
+	public List<BillCsDTO> findALLBillCsByFNO(BillCsDTO billCsDTO);
+	
+	public List<BillNcDTO> findALLBillNcByFNO(BillNcDTO billNcDTO);
 }

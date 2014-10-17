@@ -192,7 +192,43 @@
             </form>
         </div>
 	</div>
-	<div id="win_view" style="width:600px;height:400px;"></div>
+	<div id="win_view" class="easyui-window" closed="true"  style="width:1000px;height:370px;padding:5px;">
+	<div class="easyui-layout" data-options="fit:true">
+		<form id="view" method="post">
+               <div data-options="region:'east',split:true" style="width:500px;">
+	            <div style="padding:5px 5px 5px 5px">
+	            	<table id="all_toguarantee_data" >
+                   	<thead>
+						<tr>
+							<th field="barFamilyno"  align="center">家庭编号</th>
+							<th field="barMaster"  align="center">户主姓名</th>
+							<th field="barSubject"  align="center">救助时间</th>
+							<th field="barMoney"  align="right">救助金额</th>
+						</tr>
+					</thead>
+                   	</table>
+	            </div>
+            </div>
+            <div data-options="region:'center',split:true" style="width:500px;">
+               <div style="padding:5px 5px 5px 5px">
+                   	<table id="all_guarantee_data" >
+                   	<thead>
+						<tr>
+							<th field="barFamilyno"  align="center">家庭编号</th>
+							<th field="barMaster"  align="center">户主姓名</th>
+							<th field="barSubject"  align="center">救助时间</th>
+							<th field="barMoney"  align="right">救助金额</th>
+						</tr>
+					</thead>
+                   	</table>
+        		</div>
+            </div>
+            <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:closeWin_view()" style="width:80px">关闭</a>
+            </div>
+        </form>
+    </div>
+	</div>
 	<script>
 	//datagrid初始化 
 	$('#list_data').datagrid({
@@ -239,7 +275,7 @@
                    formatter:function(value,rec,index){
                        var s = '<a href="javascript:void(0)" onclick="checkssn(\''+ rec.memberId+''+rec.ds + '\')">核对医保卡号</a> ';
                        var e = '<a href="javascript:void(0)" onclick="change(\''+ rec.familyno+'-'+rec.ds +'-'+rec.memberId + '\')">救助状态变更</a> ';
-                       var d = '<a href="javascript:void(0)" onclick="view(\''+ rec.ds +'\')">查看救助记录</a> ';
+                       var d = '<a href="javascript:void(0)" onclick="view(\''+ rec.familyno+'-'+rec.ds +'\')">查看救助记录</a> ';
                        return s+'&nbsp;&nbsp;'+e+'&nbsp;&nbsp;'+d;
                    }
                  }
@@ -363,7 +399,6 @@
         	$('#win_change').window('close');
         };
         function startup(){
-        	
         	var checked = [];
         	$('input:checkbox:checked').each(function() {
                 	checked.push($(this).val());
@@ -390,20 +425,45 @@
                 	json = eval('(' + json + ')');
     				var val = json['u'];
     				if(val==1){
-    					alert("修改成功！");
+    					$.messager.alert('提示','修改成功!','info',function(){
+        					$('#win_change').window('close');
+        					$('#list_data').datagrid('reload');
+    						});
+
     				}else{
-    					alert("修改失败！");
+    		        	$.messager.alert('错误','修改失败!','error');
     				}
                 }
             });
         };
-        function view(bh){ //查看救助记录页面
-        	$('#win_view').window({
+        function view(key){ //查看救助记录页面
+        	var win;
+        	win = $('#win_view').window({
         		title:"查看救助记录",
-        		width:600,
-        		height:400,
         		modal:true
-           });
+            });
+        	win.window('open');
+        	$('#all_guarantee_data').datagrid({
+        	    title:'固定保障',
+        	    iconCls:'icon-search',//图标  
+        	    url:'<%=basePath%>page/check/getallguarantee.action?key='+key,
+        		remoteSort : false,
+        		singleSelect : true,//是否单选  
+        		pagination : false,//分页控件  
+        		rownumbers : true,
+        	});
+        	$('#all_toguarantee_data').datagrid({
+        	    title:'再保障',
+        	    iconCls:'icon-search',//图标  
+        	    url:'<%=basePath%>page/check/getalltoguarantee.action?key='+key,
+        		remoteSort : false,
+        		singleSelect : true,//是否单选  
+        		pagination : false,//分页控件  
+        		rownumbers : true,
+        	});
+        };
+        function closeWin_view(){
+        	$('#win_view').window('close');
         };
     </script>
 </body>

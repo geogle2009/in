@@ -177,4 +177,36 @@ public class YbServiceImpl implements YbService {
 		u = memberBaseinfoDAO.update(hql,param);
 		return u;
 	}
+	
+	public List<BillCsDTO> findALLBillCsByFNO(BillCsDTO billCsDTO){
+		List<BillCsDTO> resultlist = new ArrayList<BillCsDTO>();
+		String hql = "select c from BillCs as c where c.barFamilyno = ? and c.stId = ? order by c.barSubject desc";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = billCsDTO.getBarFamilyno();
+		param[1] = billCsDTO.getStId();
+		List<BillCs> rs = billCsDAO.find(hql, param);
+		for (BillCs s : rs) {
+			BillCsDTO e = new BillCsDTO();
+			BeanUtils.copyProperties(s, e);
+			resultlist.add(e);
+		}
+		return resultlist;
+	}
+	
+	public List<BillNcDTO> findALLBillNcByFNO(BillNcDTO billNcDTO){
+		List<BillNcDTO> resultlist = new ArrayList<BillNcDTO>();
+		String hql = "select n from BillNc as n where n.barFamilyno = ? and n.stId = ? order by n.barSubject desc";
+		Object[] param = null;
+		param = new Object[2];
+		param[0] = billNcDTO.getBarFamilyno();
+		param[1] = billNcDTO.getStId();
+		List<BillNc> rs = billNcDAO.find(hql, param);
+		for (BillNc s : rs) {
+			BillNcDTO e = new BillNcDTO();
+			BeanUtils.copyProperties(s, e);
+			resultlist.add(e);
+		}
+		return resultlist;
+	}
 }
