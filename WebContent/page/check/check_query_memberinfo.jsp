@@ -25,7 +25,7 @@
 </head>
 <body>
 	<div style="padding: 1px 1px 1px 1px">
-			<table cellpadding="1" width="95%">
+			<table cellpadding="1" width="100%">
 			<tr>
 				<td>家庭编号：<input id="memberDTO_familyno" size="16"
 					class="easyui-textbox" type="text" name="memberDTO.familyno"
@@ -50,7 +50,7 @@
 		</table>
 	</div>
 	<table id="list_data" 
-		style="width: 95%;height:95%; padding: 10px 10px 10px 10px;">
+		style="width: 100%; padding: 10px 10px 10px 10px;">
 <!-- 		<thead>
 			<tr>
 				<th field="familyno"  align="center">家庭编号</th>
@@ -234,13 +234,14 @@
 	$('#list_data').datagrid({
 	    title:'查询结果',
 	    iconCls:'icon-search',//图标  
-	    width: 'auto',
-	    height: 'auto',
 	    url:'<%=basePath%>page/check/querymemberinfo.action',
 		remoteSort : false,
 		singleSelect : true,//是否单选  
 		pagination : true,//分页控件  
 		rownumbers : true,
+		pageNumber:1,
+		pageSize:15,
+		pageList:[ 5, 10, 15 ,20,25,30],
 		queryParams: {
 			'memberDTO.familyno':$('#memberDTO_familyno')[0].value,
 			'memberDTO.membername':$('#memberDTO_membername')[0].value,
@@ -249,11 +250,11 @@
 			'memberDTO.onNo':'2202'
 		},
 		columns:[[  
-				 {field:'familyno',title:'家庭编号',width:'12%'},
-				 {field:'membername',title:'姓名',width:'8%'},
-				 {field:'paperid',title:'身份证号',width:'18%'},
-				 {field:'ssn',title:'医保卡号',width:'10%'},
-				 {field:'ds',title:'来源',width:'6%',
+				 {field:'familyno',title:'家庭编号',width:'10%'},
+				 {field:'membername',title:'姓名',width:'10%'},
+				 {field:'paperid',title:'身份证号',width:'12%'},
+				 {field:'ssn',title:'医保卡号',width:'12%'},
+				 {field:'ds',title:'来源',width:'5%',
 					 formatter:function(value){
 						 if(value=='1'){
 							 return '城市';
@@ -261,8 +262,16 @@
 							 return '农村';							 
 						 }
 					 }},
-				 {field:'personstate',title:'状态',width:'6%'},
-				 {field:'assistType',title:'救助状态',width:'8%'},
+				 {field:'personstate',title:'状态',width:'5%'},
+				 {field:'assistType',title:'救助状态',width:'5%', formatter:function(value){
+					 if(value=='10'){
+						 return '在保户';
+					 }else if(value=='11'){
+						 return '在保户';							 
+					 }else{
+						 return '普通居民';
+					 }
+				 }},
 				 {field:'asort',title:'再保障状态',width:'8%',
 					 formatter:function(value){
 						 if(value=='0'){
@@ -271,7 +280,7 @@
 							 return '是';
 						 }
 					 }},
-                 {field:'opt',title:'操作',width:'26%',align:'center',
+                 {field:'opt',title:'操作',align:'center',
                    formatter:function(value,rec,index){
                        var s = '<a href="javascript:void(0)" onclick="checkssn(\''+ rec.memberId+''+rec.ds + '\')">核对医保卡号</a> ';
                        var e = '<a href="javascript:void(0)" onclick="change(\''+ rec.familyno+'-'+rec.ds +'-'+rec.memberId + '\')">救助状态变更</a> ';
@@ -295,15 +304,6 @@
 			}
 		}
 	});
-		//设置分页控件  
-		var p = $('#list_data').datagrid('getPager');
-		$(p).pagination({
-			pageSize : 10,//每页显示的记录条数，默认为10  
-			pageList : [ 5, 10, 15 ,20,25,30],//可以设置每页记录条数的列表  
-			beforePageText : '第',//页数文本框前显示的汉字  
-			afterPageText : '页    共 {pages} 页',
-			displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录'
-		});
 	</script>
 	 <script>
         function submitForm(){
@@ -315,17 +315,11 @@
         			'memberDTO.paperid':$('#memberDTO_paperid')[0].value,
         			'memberDTO.ssn':$('#memberDTO_ssn')[0].value,
         			'memberDTO.onNo':''+year
-        		}
-        	}); 
-        	//设置分页控件  
-    		var p = $('#list_data').datagrid('getPager');
-    		$(p).pagination({
-    			pageSize : 10,//每页显示的记录条数，默认为10  
-    			pageList : [ 5, 10, 15 ,20,25,30],//可以设置每页记录条数的列表  
-    			beforePageText : '第',//页数文本框前显示的汉字  
-    			afterPageText : '页    共 {pages} 页',
-    			displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录'
-    		});
+        		},
+        		pageNumber:1,
+        		pageSize:15,
+        		pageList:[ 5, 10, 15 ,20,25,30]
+        	});
         };
         function clearForm(){
         	
